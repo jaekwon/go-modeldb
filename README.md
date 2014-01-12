@@ -2,11 +2,12 @@ go-modeldb
 ==========
 
 A simple wrapper around sql.DB to help with structs. Not quite an ORM.
+
 Philosophy: Don't make an ORM
 
 Example:
 
-```golang
+```go
 // Setup
 require "modeldb"
 db := ...
