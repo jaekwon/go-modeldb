@@ -227,6 +227,8 @@ func Begin() (*ModelTx, error) {
     return &ModelTx{tx, false}, nil
 }
 
+// NOTE: This only works with https://github.com/jaekwon/mysql/,
+// which was modified to start transactions lazily.
 func BeginSerializable() (*ModelTx, error) {
     tx, err := GetDB().Begin()
     if err != nil { return nil, err }
