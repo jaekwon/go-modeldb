@@ -1,4 +1,4 @@
-go-modeldb
+go-modeldb                                                                                                                                                                                                                                                                               
 ==========
 
 A simple wrapper around sql.DB to help with structs. Not quite an ORM.
@@ -15,12 +15,12 @@ modeldb.SetDB(db)
 
 
 // Declaring a model
-type User struct {                                                                                                                                                                                                                                                                       
+type User struct {
     Id       string `json:"id"      db:"id,autoinc"`
     Email    string `json:"email"   db:"email,null"`
     Scrypt   []byte `json:"-"       db:"scrypt"`
     Salt     []byte `json:"-"       db:"salt"`
-}
+}   
 var UserModel = db.GetModelInfo(new(User))
 
 
@@ -31,11 +31,11 @@ _, err = modeldb.Exec(
     `INSERT INTO user (`+UserModel.FieldsInsert+`)
      VALUES (`+UserModel.Placeholders+`)`,
     user,
-)
+) 
 
 
 // Querying a model
-var user User                                                                                                                                                                                                                                                                        
+var user User
 err := modeldb.QueryRow(
     `SELECT `+UserModel.FieldsSimple+`
      FROM user WHERE email=?`,
@@ -46,8 +46,8 @@ err := modeldb.QueryRow(
 // Querying many rows
 rows, err := modeldb.QueryAll(User{},
     `SELECT `+UserModel.FieldsSimple+`
-     FROM user WHERE id < 100`)
-)
+     FROM user WHERE id < 100`)     
+)   
 if err != nil { panic(err) }
 users := rows.([]*User)
 ```
