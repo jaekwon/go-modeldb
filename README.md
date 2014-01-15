@@ -53,3 +53,5 @@ users := rows.([]*User)
 ```
 
 Transactions are also supported!
+
+Also includes an adapter to convert MySQL-style '?' placeholders to '$i' placeholders for PostgresQL etc.
