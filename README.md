@@ -50,6 +50,7 @@ rows, err := modeldb.QueryAll(User{},
 if err != nil { panic(err) }
 users := rows.([]*User)
 
+
 // Auto-retry transaction blocks
 err := db.DoBeginSerializable(func(tx *db.ModelTx) {
     _, err := tx.Exec(...)
@@ -61,3 +62,7 @@ err := db.DoBeginSerializable(func(tx *db.ModelTx) {
 ```
 
 Also supports MySQL with some included helpers.
+
+### Alternatives
+
+https://github.com/jmoiron/sqlx
