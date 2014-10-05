@@ -26,9 +26,8 @@ var UserModel = db.GetModelInfo(new(User))
 
 // Inserting a model
 user := &User{Email:email, Scrypt:scrypt, Salt:salt}
-
 _, err = modeldb.Exec(
-    `INSERT INTO user (`+UserModel.FieldsInsert+`)
+    `INSERT INTO user (`+UserModel.InsertFields+`)
      VALUES (`+UserModel.Placeholders+`)`,
     user,
 ) 
@@ -37,7 +36,7 @@ _, err = modeldb.Exec(
 // Querying a model
 var user User
 err := modeldb.QueryRow(
-    `SELECT `+UserModel.FieldsSimple+`
+    `SELECT `+UserModel.QueryFields+`
      FROM user WHERE email=?`,
     email,
 ).Scan(&user)
@@ -45,13 +44,20 @@ err := modeldb.QueryRow(
 
 // Querying many rows
 rows, err := modeldb.QueryAll(User{},
-    `SELECT `+UserModel.FieldsSimple+`
+    `SELECT `+UserModel.QueryFields+`
      FROM user WHERE id < 100`)     
 )   
 if err != nil { panic(err) }
 users := rows.([]*User)
+
+// Auto-retry transaction blocks
+err := db.DoBeginSerializable(func(tx *db.ModelTx) {
+    _, err := tx.Exec(...)
+    if err != nil {
+        panic(err)
+    }
+    ...
+})
 ```
 
-Transactions are also supported!
-
-Also includes an adapter to convert MySQL-style '?' placeholders to '$i' placeholders for PostgresQL etc.
+Also supports MySQL with some included helpers.

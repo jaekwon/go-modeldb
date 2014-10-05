@@ -66,13 +66,13 @@ type ModelField struct {
 
 // Represents meta info about a model
 type ModelInfo struct {
-	Type           reflect.Type
-	TableName      string
-	Fields         []*ModelField
-	FieldsSimple   string
-	FieldsPrefixed string
-	FieldsInsert   string
-	Placeholders   string
+	Type                reflect.Type
+	TableName           string
+	Fields              []*ModelField
+	QueryFields         string
+	PrefixedQueryFields string
+	InsertFields        string
+	Placeholders        string
 }
 
 // Global cache
@@ -131,9 +131,9 @@ func GetModelInfoFromType(modelType reflect.Type) *ModelInfo {
 		}
 	}
 
-	m.FieldsSimple = strings.Join(fieldNames, ", ")
-	m.FieldsPrefixed = m.TableName + "." + strings.Join(fieldNames, ", "+m.TableName+".")
-	m.FieldsInsert = strings.Join(fieldInsertNames, ", ")
+	m.QueryFields = strings.Join(fieldNames, ", ")
+	m.PrefixedQueryFields = m.TableName + "." + strings.Join(fieldNames, ", "+m.TableName+".")
+	m.InsertFields = strings.Join(fieldInsertNames, ", ")
 	m.Placeholders = strings.Join(ph, ", ")
 
 	return m
